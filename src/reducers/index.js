@@ -1,12 +1,13 @@
 // to combine reducers in the store for data collection
 
 import {combineReducers} from 'redux';
-import getAdminsReducer from './getAdminsReducer'
-import getCommentsReducer from './getCommentsReducer'
-import getCustomersReducer from './getCustomersReducer'
-import getOrdersReducer from './getOrdersReducer'
-import getProductsReducer from './getProductsReducer'
-import getVendorsReducer from './getVendorsReducer'
+import getAdminsReducer from './getAdminsReducer';
+import getCommentsReducer from './getCommentsReducer';
+import getCustomersReducer from './getCustomersReducer';
+import getOrdersReducer from './getOrdersReducer';
+import getProductsReducer from './getProductsReducer';
+import getVendorsReducer from './getVendorsReducer';
+import getCustomerReducer from './getCustomerReducer';
 
 export default combineReducers ({
     admins:getAdminsReducer,
@@ -14,5 +15,6 @@ export default combineReducers ({
     customers: getCustomersReducer,
     orders:getOrdersReducer,
     products:getProductsReducer,
-    vendors: getVendorsReducer
+    vendors: getVendorsReducer,
+    customer:getCustomerReducer
 });
