@@ -32,8 +32,19 @@ export const getVendors = () => async dispatch => { // to get all Vendor info fr
 };
 
 export const getCustomer = (loginData) => async dispatch => { // to get single customer info from backend/database
-    const res = await api.post('/customers/login',loginData);
-    dispatch({type:'GET_CUSTOMER',payload:res.data});
-    history.push('/products');
+    try {
+        const res = await api.post('/customers/login',loginData)
+        dispatch({type:'GET_CUSTOMER',payload:res.data});
+        history.push('/products');
+    } catch(error) {
+        console.log(error.response.data);
+        dispatch({type:'NO_CUSTOMER',payload:error.response.data});
+
+    };
+    
+};
+
+export const cleanText = () => async dispatch => {
+    dispatch({type:'NO_CUSTOMER',payload:""});
 };
 

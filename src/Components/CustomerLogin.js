@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import {connect} from 'react-redux';
 import {getCustomer} from '../actions';
+import {cleanText} from '../actions';
 
 // to allow Customer to login with this component
 class CustomerLogin extends Component {
@@ -15,11 +16,13 @@ class CustomerLogin extends Component {
     submitHandler = (e) => {
         e.preventDefault();
         this.props.getCustomer(this.state);
+        
     };
 
     changeHandler = (e) => {
         if (e.target.name==="email") this.setState({customerEmail:e.target.value});
         if (e.target.name==="password") this.setState({customerPassword:e.target.value});
+        this.props.cleanText();
 
     };
     
@@ -37,16 +40,17 @@ class CustomerLogin extends Component {
                             <div className="field">
                                 <div className="ui left icon input">
                                     <i className="user icon"></i>
-                                    <input onChange={(e)=>this.changeHandler(e)} type="email" name="email" placeholder="E-mail address" autoComplete="off" />
+                                    <input onChange={(e)=>this.changeHandler(e)} type="email" name="email" placeholder="E-mail address" autoComplete="on" />
                                 </div>
                             </div>
                             <div className="field">
                                 <div className="ui left icon input">
                                     <i className="lock icon"></i>
-                                    <input onChange={(e)=>this.changeHandler(e)} type="password" name="password" placeholder="Password" autoComplete="off"/>
+                                    <input onChange={(e)=>this.changeHandler(e)} type="password" name="password" placeholder="Password" autoComplete="on"/>
                                 </div>
                             </div>
                             <button className="ui fluid large teal submit button">Login</button>
+                            <span>{this.props.noCustomer}</span>
                         </div>
                         <div className="ui error message"></div>
                     </form>
@@ -58,7 +62,7 @@ class CustomerLogin extends Component {
 };
 
 const mapStateToProps = (state) => {
-    return ({customer:state.customer});
+    return ({noCustomer:state.noCustomer});
 };
 
-export default connect (mapStateToProps,{getCustomer})(CustomerLogin);
+export default connect (mapStateToProps,{getCustomer,cleanText})(CustomerLogin);

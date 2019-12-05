@@ -8,6 +8,8 @@ import getOrdersReducer from './getOrdersReducer';
 import getProductsReducer from './getProductsReducer';
 import getVendorsReducer from './getVendorsReducer';
 import getCustomerReducer from './getCustomerReducer';
+import noCustomerReducer from './noCustomerReducer';
+
 
 export default combineReducers ({
     admins:getAdminsReducer,
@@ -16,5 +18,6 @@ export default combineReducers ({
     orders:getOrdersReducer,
     products:getProductsReducer,
     vendors: getVendorsReducer,
-    customer:getCustomerReducer
+    customer:getCustomerReducer,
+    noCustomer:noCustomerReducer
 });
