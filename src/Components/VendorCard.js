@@ -8,7 +8,7 @@ export default function VendorCard(props) {
     });
     
     return (
-        <div className="ui card">
+        <div className="ui segment">
             {/* <div className="ui slide masked reveal image">
                 <Link to="/vendor/login" className="image">
                     <img src="" className="visible content" alt="vendor.logo" />

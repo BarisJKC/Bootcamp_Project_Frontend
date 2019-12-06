@@ -1,8 +1,8 @@
-// to get vendors list from database
+// to get products into customer basket
 
-export default (state="",action) => {
+export default (state=[],action) => {
     switch (action.type) {
-        case 'NO_CUSTOMER':
+        case 'GET_INTO_CUSTOMER_BASKET':
                 return action.payload;
         default:
             return state;

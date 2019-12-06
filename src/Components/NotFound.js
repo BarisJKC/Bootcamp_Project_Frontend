@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import './NotFound.css';
 
 export default function NotFound() {
@@ -362,5 +362,5 @@ export default function NotFound() {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

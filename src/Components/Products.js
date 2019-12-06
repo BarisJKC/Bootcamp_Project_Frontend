@@ -1,101 +1,44 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {getProducts} from '../actions';
+import { Link } from "react-router-dom";
 import Spinner from './Spinner';
 import ProductCard from './ProductCard';
+import {getProducts} from '../actions';
 import {getVendors} from '../actions';
-import { Link } from "react-router-dom";
+import {updateCustomerBasket} from '../actions';
 
 //  to get all Products and create a render status for products
 class Products extends Component {
     
     state = {
         stateId:""
-    }
-
-    renderProductList() {
-        if (this.props.products.length>0) {
-            const renderThis = this.props.products.map(({_id,productName,productType,productUnit}) => {
-                return (
-                    <ProductCard key={_id} name={productName} type={productType} unit={productUnit} />
-                );
-            });
-            return renderThis;
-        } else {
-            return <div><Spinner /></div>;
-        };
     };
 
-    renderVendorProductList() {
+    renderThisVendorProductList = (id) =>{        
         if (this.props.vendors.length>0) {
-            const renderThis = this.props.vendors[0].vendorPortfolio.map(({_id,vendorProduct,vendorQty,vendorPrice}) => {
-                return (
-                    <ProductCard key={_id} name={vendorProduct.productName} type={vendorQty} unit={vendorPrice} />
-                );
-            });
-            return renderThis;
-        } else {
-            return <div><Spinner /></div>;
-        };
-    };
-
-    renderThisVendorProductList = (id) =>{
-        
-        if (this.props.vendors.length>0) {
-            console.log(id);
-            console.log(this.state.stateId.length);
-            if(id==="" && !this.state.stateId.length>0) {
-                
+            if(id==="" && !this.state.stateId.length>0) { // to render all products of all vendors
                 let renderThis=[];
                 this.props.vendors.forEach(vendor => {
                     const renderTemp = vendor.vendorPortfolio.map(({_id,vendorProduct,vendorQty,vendorPrice}) => {
                         return (
-                            <ProductCard key={_id} city={vendor.vendorCity} name={vendorProduct.productName} type={vendorQty} price={vendorPrice} unit={vendorProduct.productUnit} />
+                            <ProductCard key={_id} vendorId={vendor._id} productId={vendorProduct._id} vendor={vendor.vendorName} city={vendor.vendorCity} name={vendorProduct.productName} type={vendorQty} qty={vendorQty} price={vendorPrice} unit={vendorProduct.productUnit} />
                         );
                     });
-                    renderThis=[...renderTemp,renderThis]
-                    console.log(renderThis)
+                    renderThis=[...renderTemp,renderThis];
                 });
-                
-                // const vendor=this.props.vendors[0].vendorName;
-                // const renderThis = this.props.vendors[0].vendorPortfolio.map(({_id,vendorProduct,vendorQty,vendorPrice}) => {
-                //     return (
-                //         <ProductCard key={_id} vendor={vendor} name={vendorProduct.productName} type={vendorQty} unit={vendorPrice} />
-                //     );
-                // });
-                console.log('Üst taraf',renderThis)
                 return (renderThis);
-
-            } else if (id!==undefined && id!=="") {
-                
+            } else if (id!==undefined && id!=="") { // to render all products of one vendor
                 if (this.state.stateId!==id) this.setState({stateId:id});
-                console.log('state', this.state.stateId)
-                console.log('ID var',id);
-                console.log(this.props.vendors)
                 const selectedVendor = this.props.vendors.find(vendor=>vendor._id===id);
                 let selectedVendorArray=[];
                 selectedVendorArray.push(selectedVendor);
-                console.log('secilen tedarkiçi array',selectedVendorArray)
-                console.log('secilen tedarkiçi',selectedVendor)
                 const renderThis = selectedVendorArray[0].vendorPortfolio.map(({_id,vendorProduct,vendorQty,vendorPrice}) => {
                     return (
-                        <ProductCard key={_id} vendor={selectedVendor.vendorName} city={selectedVendor.vendorCity} name={vendorProduct.productName} qty={vendorQty} price={vendorPrice} unit={vendorProduct.productUnit} />
+                        <ProductCard key={_id} vendorId={selectedVendor._id} productId={vendorProduct._id} vendor={selectedVendor.vendorName} city={selectedVendor.vendorCity} name={vendorProduct.productName} qty={vendorQty} price={vendorPrice} unit={vendorProduct.productUnit} />
                     );
                 });
-                console.log('Alt taraf',renderThis)
-                return renderThis;
-                // const renderThis=`<ProductCard key="${selectedVendor._id}" name="${selectedVendor.vendorPortfolio[0].vendorProduct.productName}" type="${selectedVendor.vendorPortfolio[0].vendorQty}" unit="${selectedVendor.vendorPortfolio[0].vendorPrice}" />`
-                // console.log(renderThis)
-                // const renderThis = selectedVendor.vendorPortfolio.map(({_id,vendorProduct,vendorQty,vendorPrice}) => {
-                //     return (
-                //         <ProductCard key={_id} name={vendorProduct.productName} type={vendorQty} unit={vendorPrice} />
-                //     );
-                // });
-                // console.log()
-                // return (renderThis);
-                
+                return renderThis;                
             };
-
         } else {
             return <div><Spinner /></div>;
         };
@@ -114,6 +57,23 @@ class Products extends Component {
         };
     };
 
+    renderBasket = () => {
+        if(this.props.customerBasket.length>0) {
+
+            const renderThis = this.props.customerBasket.map(({itemName,itemUnit,itemCity,itemQTy},index)=> {
+                return (
+                    <div key={index}>
+                        <div>{itemName}-{itemUnit}-{itemCity}-{itemQTy} paket</div>
+                        <button onClick={()=>this.props.updateCustomerBasket(index)}><i className="minus icon left"></i></button>
+                    </div>
+                );
+            });
+            return renderThis; 
+        } else { 
+            return ("Sepetiniz boş");
+        };
+    };
+
     componentDidMount() {
         this.props.getProducts();
         this.props.getVendors();
@@ -122,18 +82,27 @@ class Products extends Component {
     render() {
         return (
             <div className="ui padded grid">
-                <div className="four wide column"><Link to="/products" onClick={()=>this.setState({stateId:""})}><div>All</div></Link>{this.renderVendorList()}</div>
-                <div className="one wide column"></div>
-                <div className="eleven wide column">{this.renderThisVendorProductList(this.state.stateId)}</div>
+                <div className="four wide column"><Link to="/products" onClick={()=>this.setState({stateId:""})}><div>Tümü</div></Link>{this.renderVendorList()}</div>
+                {/* <div className="one wide column"></div> */}
+                <div className="seven wide column">{this.renderThisVendorProductList(this.state.stateId)}</div>
+                <div className="four wide column">Sepetim
+                    <div>{this.props.customerLoginStatus}</div>
+                    <div>{this.renderBasket()}</div>
+                </div>
             </div>
-        )
+        );
     };
 };
 
 const mapStateToProps = (state) => {
-    return ({products:state.products,vendors:state.vendors});
+    return ({
+        products:state.products,
+        vendors:state.vendors,
+        customerLoginStatus:state.customerLoginStatus,
+        customerBasket:state.customerBasket
+    });
 };
 
-export default connect (mapStateToProps,{getProducts,getVendors})(Products);
+export default connect (mapStateToProps,{getProducts,getVendors,updateCustomerBasket})(Products);
 
 

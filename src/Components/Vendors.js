@@ -22,12 +22,11 @@ class Vendors extends Component {
 
     componentDidMount() {
         this.props.getVendors();
-        
     };
     
     render() {
         return (
-            <div>
+            <div className="ui text container horizontal segments">
                 {this.renderList()}
             </div>
         )

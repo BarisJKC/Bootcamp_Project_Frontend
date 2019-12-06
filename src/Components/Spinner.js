@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import './Spinner.css';
 
 export default function Spinner() {
@@ -6,5 +6,5 @@ export default function Spinner() {
         <div className="load">
           <hr/><hr/><hr/><hr/>
         </div>
-    )
-}
+    );
+};

@@ -7,8 +7,12 @@ import getCustomersReducer from './getCustomersReducer';
 import getOrdersReducer from './getOrdersReducer';
 import getProductsReducer from './getProductsReducer';
 import getVendorsReducer from './getVendorsReducer';
-import getCustomerReducer from './getCustomerReducer';
-import noCustomerReducer from './noCustomerReducer';
+import getCustomerTokenReducer from './getCustomerTokenReducer';
+import customerLoginStatusReducer from './customerLoginStatusReducer';
+import getCustomerProfileReducer from './getCustomerProfileReducer';
+import getCustomerRegisterReducer from './getCustomerRegisterReducer';
+import getIntoCustomerBasketReducer from './getIntoCustomerBasketReducer';
+import customerBasketValueReducer from './customerBasketValueReducer';
 
 
 export default combineReducers ({
@@ -18,6 +22,10 @@ export default combineReducers ({
     orders:getOrdersReducer,
     products:getProductsReducer,
     vendors: getVendorsReducer,
-    customer:getCustomerReducer,
-    noCustomer:noCustomerReducer
+    customerToken:getCustomerTokenReducer,
+    customerLoginStatus:customerLoginStatusReducer,
+    customerProfile:getCustomerProfileReducer,
+    customerRegister:getCustomerRegisterReducer,
+    customerBasket:getIntoCustomerBasketReducer,
+    customerBasketValue:customerBasketValueReducer
 });
