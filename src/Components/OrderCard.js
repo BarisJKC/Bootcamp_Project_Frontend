@@ -4,7 +4,7 @@ export default class OrderCard extends Component {
     
     componentDidMount() {
         this.renderList();
-        console.log("this.props",this.props.list)
+        // console.log("this.props",this.props.list);
 
     };
 
