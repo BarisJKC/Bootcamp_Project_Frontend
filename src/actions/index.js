@@ -54,7 +54,7 @@ export const getCustomerProfile = () => async (dispatch,getState) => { // to get
 
 export const getCustomerToken = (loginData) => async dispatch => { // to get single customer info from backend/database and get a token for the customer from backend
     try {
-        console.log(loginData);
+        // console.log(loginData);
         const res = await api.post('/customers/login',loginData);
         dispatch({type:'GET_CUSTOMER_TOKEN',payload:res.headers});
         if(!loginData.isFromRegister) { // check if the request is coming from new register or not
@@ -80,7 +80,7 @@ export const getCustomerToken = (loginData) => async dispatch => { // to get sin
 
 export const getCustomerRegister = (registerData) => async (dispatch,getState) => { // to get a new customer register into database
     try {
-        console.log(registerData);
+        // console.log(registerData);
         const res = await api.post('/customers/register',registerData);
         dispatch({type:'GET_CUSTOMER_REGISTER',payload:res.data});
         // console.log(res.headers);
@@ -139,7 +139,7 @@ export const getCustomerBasketValue = () => async (dispatch,getState) => {
 }
 
 export const createCustomerOrder = () => async (dispatch,getState) => {
-    console.log('sipariş vermedesin')
+    // console.log('sipariş vermedesin')
     try {
         const customerId = getState().customerProfile._id; // Customer ID is stored in the store
         const basket = getState().customerBasket.map(({itemVendorId,itemProductId,itemQty,itemValue})=>({orderVendor:itemVendorId,orderProduct:itemProductId,orderQty:itemQty,orderItemValue:itemValue})); // Basket is stored in the store
