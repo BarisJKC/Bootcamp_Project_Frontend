@@ -44,7 +44,8 @@ class CustomerRegister extends Component {
                 <div className="column">
                     <h2 className="ui teal image header">
                         <i className="paint brush icon"></i>
-                        <div className="content">Dear Customer, here is our registry form and enjoy your day :)</div>
+                        <div className="content">Dear Customer, here is our registry form and enjoy your day</div>
+                        <i className="smile icon"></i>
                     </h2>
                     <form onSubmit={this.submitHandler} className="ui large form">
                         <div className="ui stacked segment">

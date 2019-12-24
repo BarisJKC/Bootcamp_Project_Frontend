@@ -13,6 +13,7 @@ import getCustomerProfileReducer from './getCustomerProfileReducer';
 import getCustomerRegisterReducer from './getCustomerRegisterReducer';
 import getIntoCustomerBasketReducer from './getIntoCustomerBasketReducer';
 import customerBasketValueReducer from './customerBasketValueReducer';
+import getCustomerOrderStatusReducer from './getCustomerOrderStatusReducer';
 
 
 export default combineReducers ({
@@ -27,5 +28,6 @@ export default combineReducers ({
     customerProfile:getCustomerProfileReducer,
     customerRegister:getCustomerRegisterReducer,
     customerBasket:getIntoCustomerBasketReducer,
-    customerBasketValue:customerBasketValueReducer
+    customerBasketValue:customerBasketValueReducer,
+    customerOrderStatus:getCustomerOrderStatusReducer
 });

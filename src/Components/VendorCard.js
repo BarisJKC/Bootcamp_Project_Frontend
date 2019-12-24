@@ -8,7 +8,7 @@ export default function VendorCard(props) {
     });
     
     return (
-        <div className="ui segment">
+        <div className="ui card">
             {/* <div className="ui slide masked reveal image">
                 <Link to="/vendor/login" className="image">
                     <img src="" className="visible content" alt="vendor.logo" />
@@ -18,13 +18,13 @@ export default function VendorCard(props) {
                 </Link>
             </div> */}
             <div className="content">
-                <Link to="/vendor/login" className="header">{props.name}</Link>
+                <Link to="/products" className="header">{props.name}</Link>
                 <div className="meta">
                 <span className="date">{props.city}</span>
                 </div>
             </div>
             <div className="extra content">
-                <Link to="/vendor/login" >
+                <Link to="/products" >
                 <i className="shipping fast icon"></i>
                 {props.products.length} {renderThis}
                 </Link>

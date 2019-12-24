@@ -26,7 +26,7 @@ class Vendors extends Component {
     
     render() {
         return (
-            <div className="ui text container horizontal segments">
+            <div className="ui fluid cards">
                 {this.renderList()}
             </div>
         )

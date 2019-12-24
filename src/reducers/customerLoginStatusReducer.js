@@ -3,7 +3,7 @@
 export default (state="",action) => {
     switch (action.type) {
         case 'CUSTOMER_LOGIN_STATUS':
-                return action.payload;
+            return action.payload;
         default:
             return state;
     };

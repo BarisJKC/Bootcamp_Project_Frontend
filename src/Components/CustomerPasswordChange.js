@@ -1,32 +1,25 @@
-import React, { Component } from 'react';
-import { Link } from "react-router-dom";
-import {connect} from 'react-redux';
-import {getCustomerToken} from '../actions';
-import {cleanLoginStatusText} from '../actions';
+import React, { Component } from 'react'
 
-// to allow Customer to login with this component
-class CustomerLogin extends Component {
-
+export default class CustomerPasswordChange extends Component {
+    
     state = {
         customerEmail:"",
-        customerPassword:""
+        customerPassword:"",
+        customerNewPassword:""
     };    
 
     submitHandler = (e) => {
         e.preventDefault();
-        this.props.getCustomerToken(this.state);
+        this.props.getCustomerPasswordChanged(this.state);
         
     };
 
     changeHandler = (e) => {
         if (e.target.name==="email") this.setState({customerEmail:e.target.value});
         if (e.target.name==="password") this.setState({customerPassword:e.target.value});
+        if (e.target.name==="newPassword") this.setState({customerNewPassword:e.target.value});
         this.props.cleanLoginStatusText();
     };
-    
-    componentDidMount() {
-        this.props.cleanLoginStatusText();
-    }
 
     render() {
         return (
@@ -37,8 +30,6 @@ class CustomerLogin extends Component {
                         <i className="key icon"></i>
                         <div className="content">Log-in to your account</div>
                     </h2>
-
-
                     <form onSubmit={this.submitHandler} className="ui large form">
                         <div className="ui stacked segment">
                             <div className="field">
@@ -53,22 +44,19 @@ class CustomerLogin extends Component {
                                     <input onChange={(e)=>this.changeHandler(e)} type="password" name="password" placeholder="Password" autoComplete="on"/>
                                 </div>
                             </div>
-                            <button className="ui fluid large teal submit button">Login</button>
+                            <button className="ui fluid large teal submit button">Update Password</button>
+                            <div className="field">
+                                <div className="ui left icon input">
+                                    <i className="lock icon"></i>
+                                    <input onChange={(e)=>this.changeHandler(e)} type="new password" name="newPassword" placeholder="New Password" autoComplete="on"/>
+                                </div>
+                            </div>
+                            <button className="ui fluid large teal submit button">Update Password</button>
                             <span>{this.props.customerLoginStatus}</span>
                         </div>
-                        <div className="ui error message"></div>
                     </form>
-
-
-                    <div className="ui message">New to us? <Link to="/customers/register">Register</Link></div>
                 </div>
             </div>
         );
-    };
-};
-
-const mapStateToProps = (state) => {
-    return ({customerLoginStatus:state.customerLoginStatus});
-};
-
-export default connect (mapStateToProps,{getCustomerToken,cleanLoginStatusText})(CustomerLogin);
+    }
+}

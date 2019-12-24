@@ -20,7 +20,7 @@ const App = () => {
   return (
     <div className="ui container">
       <Router history={history}>
-        <div>
+        {/* <div> */}
           <Route component={Navbar} />
           <Switch>
             <Route exact path="/" component={Home} />
@@ -34,7 +34,7 @@ const App = () => {
             <Route exact path="/vendors" component={Vendors} />
             <Route path="*" component={NotFound} />
           </Switch>
-        </div>
+        {/* </div> */}
       </Router>
     </div>
   );
