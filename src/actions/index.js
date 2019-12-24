@@ -43,9 +43,9 @@ export const getVendors = () => async dispatch => { // to get all Vendor info fr
 export const getCustomerProfile = () => async (dispatch,getState) => { // to get the customer profile info with the token of the customer from backend/database
     try {
         const token = getState().customerToken.authorization; // token is stored in the store
-        console.log("Token",token)
+        // console.log("Token",token)
         const res = await api.get('/customers/profile',{headers: {'Authorization': token}});
-        console.log('Res',res)
+        // console.log('Res',res)
         dispatch({type:'GET_CUSTOMER_PROFILE',payload:res.data});
     } catch (res) {
         dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:"You need to login!"});
@@ -143,14 +143,14 @@ export const createCustomerOrder = () => async (dispatch,getState) => {
     try {
         const customerId = getState().customerProfile._id; // Customer ID is stored in the store
         const basket = getState().customerBasket.map(({itemVendorId,itemProductId,itemQty,itemValue})=>({orderVendor:itemVendorId,orderProduct:itemProductId,orderQty:itemQty,orderItemValue:itemValue})); // Basket is stored in the store
-        console.log("Basket",basket)
+        // console.log("Basket",basket)
         const value = getState().customerBasketValue; // Basket value is stored in the store
         const orderToRelease = {
             orderCustomer:customerId,
             orderList:basket,
             orderValue:value,
         };
-        console.log(orderToRelease);
+        // console.log(orderToRelease);
         const res = await api.post('/orders/create',orderToRelease);
         dispatch({type:'GET_CUSTOMER_ORDER_STATUS',payload:res.data});
         dispatch({type:'GET_CUSTOMER_BASKET_VALUE',payload:0});
