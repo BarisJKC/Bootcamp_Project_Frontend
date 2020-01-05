@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import './Navbar.css'
+import api from "../api/api"; // to use axios api
 
 export default function Navbar(props) {
+  useEffect(() => {
+    const myTimer = setInterval(() => {api.get('/products')}, 300000);
+    return () => clearTimeout(myTimer);
+  }, []);
+  
   return (
     <div className="ui stackable secondary pointing menu">
       <Link to="/" className={`item ${props.history.location.pathname==="/" ? "active" : ""}`}>
