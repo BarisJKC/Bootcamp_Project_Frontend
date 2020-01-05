@@ -5,7 +5,7 @@ import api from "../api/api"; // to use axios api
 
 export default function Navbar(props) {
   useEffect(() => {
-    const myTimer = setInterval(() => {api.get('/products');console.log("awake")}, 300000);
+    const myTimer = setInterval(() => {api.get('/products');console.log("awake")}, 10000);
     return () => clearTimeout(myTimer);
   }, []);
   
