@@ -4,10 +4,10 @@ import './Navbar.css'
 import api from "../api/api"; // to use axios api
 
 export default function Navbar(props) {
-  useEffect(() => {
-    const myTimer = setInterval(() => {api.get('/products');console.log("awake")}, 10000);
-    return () => clearTimeout(myTimer);
-  }, []);
+  // useEffect(() => {
+  //   const myTimer = setInterval(() => {api.get('/products');console.log("awake")}, 10000);
+  //   return () => clearTimeout(myTimer);
+  // }, []);
   
   return (
     <div className="ui stackable secondary pointing menu">
