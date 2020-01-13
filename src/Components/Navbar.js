@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { } from 'react';
 import { Link } from "react-router-dom";
 import './Navbar.css'
-import api from "../api/api"; // to use axios api
+// import api from "../api/api"; // to use axios api
 
 export default function Navbar(props) {
   // useEffect(() => {

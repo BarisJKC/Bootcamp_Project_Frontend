@@ -16,14 +16,13 @@ class Products extends Component {
     state = {
         stateId:"",
         isOrder:false,
-        searchedProduct:"",
+        searchedProduct:""
         // isSearched:false
     };
 
-    renderThisVendorProductList = (id) =>{        
+    renderVendorProductList = (id) =>{        
         if (this.props.vendors.length>0) {
             if(id==="") { // to render all products of all vendors
-                // if (this.state.isSearched) {this.setState({isSearched:false});this.setState({searchedProduct:""});};
                 let renderThis=[];
                 this.props.vendors.forEach(vendor => {
                     const renderTemp = vendor.vendorPortfolio.map(({_id,vendorProduct,vendorQty,vendorPrice}) => {
@@ -33,9 +32,8 @@ class Products extends Component {
                     });
                     renderThis.push(renderTemp);
                 });
-                return (renderThis);
+                return renderThis;
             } else if (id.length>20) { // to render all products of one vendor
-                // if (this.state.isSearched) {this.setState({isSearched:false});this.setState({searchedProduct:""});};
                 if (this.state.stateId!==id) this.setState({stateId:id});
                 const selectedVendor = this.props.vendors.find(vendor=>vendor._id===id);
                 let selectedVendorArray=[];
@@ -45,39 +43,44 @@ class Products extends Component {
                         <ProductCard key={_id} vendorId={selectedVendor._id} productId={vendorProduct._id} vendor={selectedVendor.vendorName} city={selectedVendor.vendorCity} name={vendorProduct.productName} qty={vendorQty} price={vendorPrice} unit={vendorProduct.productUnit}  URL={vendorProduct.productImage} />
                     );
                 });
-
                 return renderThis;                
-            } else if (id.length<20) {
-                let temp1=[]; // temp2 and 3 var for portfolio,  
-                let temp2=[]; // temp2 and 3 var for portfolio,  
-                let temp4=[];  // temp1 and 4 var for vendors
+            } else if (this.state.isSearched) { // to render all products based on search text
+                // let temp1 = []; // temp2 and 3 var for portfolio,  
+                // let temp2 = []; // temp2 and 3 var for portfolio,  
+                let temp4 = [];  // temp1 and 4 var for vendors
 
-                temp1= this.props.vendors;
-                for (var j=0;j<temp1.length;j++) {
+                // this.setState({tempRender:this.props.vendors})
+                // if (this.state.tempRender.length>0) 
+                // temp1 = this.state.tempRender;
+                // temp1 = this.props.vendors;
+
+                for (var j = 0; j<this.props.vendors.length; j++) {
                     
-                    temp2=temp1[j].vendorPortfolio;
-                    let temp3=[]; // temp2 and 3 var for portfolio,  
-                    for (var i=0;i<temp2.length;i++) {
-                        
-                        if(temp2[i].vendorProduct.productName===this.state.searchedProduct) {
-                            temp3.push(temp2[i])
+                    // temp2 = this.props.vendors[j].vendorPortfolio;
+                    var temp3 = []; // temp2 and 3 var for portfolio,  
+                    for (var i = 0; i<this.props.vendors[j].vendorPortfolio.length; i++) {
+                        if(this.props.vendors[j].vendorPortfolio[i].vendorProduct.productName.toLocaleLowerCase('tr').startsWith(this.state.stateId.toLocaleLowerCase('tr'))) {
+                            temp3.push(this.props.vendors[j].vendorPortfolio[i])
                         }
                     };
-                    
+                    let temp5 = undefined;
                     if (temp3.length>0) {
-                        temp1[j].vendorPortfolio=temp3;
-                        temp4.push(temp1[j]);
+                        temp5 = {...this.props.vendors[j]}
+                        temp5.vendorPortfolio = temp3;
+                        temp4.push(temp5);
                     };
                 };
                 let renderThis=[];
+
                 temp4.forEach(vendor => {
                     const renderTemp = vendor.vendorPortfolio.map(({_id,vendorProduct,vendorQty,vendorPrice}) => { 
                         return (
                             <ProductCard key={_id} vendorId={vendor._id} productId={vendorProduct._id} vendor={vendor.vendorName} city={vendor.vendorCity} name={vendorProduct.productName} type={vendorQty} qty={vendorQty} price={vendorPrice} unit={vendorProduct.productUnit} URL={vendorProduct.productImage} />
                         );
                     });
-                    renderThis.push(renderTemp[0]);
+                    renderThis.push(...renderTemp);
                 });
+                
                 return renderThis;
             };
         } else {
@@ -89,7 +92,7 @@ class Products extends Component {
         if (this.props.vendors.length>0) {
             const renderThis = this.props.vendors.map(({_id,vendorName,vendorCity}) => {
                 return (
-                    <Link to="/products" onClick={()=>this.renderThisVendorProductList(_id)} key={_id}><div>{vendorName} - {vendorCity}</div></Link>
+                    <Link to="/products" onClick={async ()=>{await this.setState({isSearched:false});this.renderVendorProductList(_id)}} key={_id}><div>{vendorName} - {vendorCity}</div></Link>
                 );
             });
             return renderThis;
@@ -141,23 +144,20 @@ class Products extends Component {
         this.props.getVendors();
     };
 
-    changeHandler = (e) => {
-        this.setState({searchedProduct:e.target.value});
-
+    changeHandler = async (e) => {
+        this.state.isSearched ? await this.setState({searchedProduct:e.target.value,stateId:this.state.stateId}) : await this.setState({searchedProduct:e.target.value,isSearched:false,stateId:""})
     };
 
-    submitHandler = (e)=> {
+    submitHandler = async (e) => {
         e.preventDefault();
-        this.setState({isSearched:true});
-        this.setState({stateId:this.state.searchedProduct});
-
-        // await this.renderThisVendorProductList(this.state.searchedProduct);
+        await this.setState({stateId:this.state.searchedProduct});
+        this.state.stateId === "" ? await this.setState({isSearched:false}) : await this.setState({isSearched:true})
     };
 
     render() {
         return (
             <div className="ui padded grid">
-                <div className="four wide olive column"><Link to="/products" onClick={()=>this.setState({stateId:""})}><div>Tüm Tedarikçiler</div></Link>{this.renderVendorList()}</div>
+                <div className="four wide olive column"><Link to="/products" onClick={()=>this.setState({stateId:"",isSearched:false})}><div>Tüm Tedarikçiler</div></Link>{this.renderVendorList()}</div>
                 <div className="seven wide column">
 
                 <div className="ui fluid category search">
@@ -173,12 +173,8 @@ class Products extends Component {
                     </div>
                     <div className="results"></div>
                 </div>
-                {this.renderThisVendorProductList(this.state.stateId)}
+                {this.renderVendorProductList(this.state.stateId)}
 
-
-
-
-                   
                 </div>
                 <div className="four wide olive column">Sepetim; Değeri: {this.props.customerBasketValue} TL {this.renderOrderButton()}
                     <div>{this.props.customerLoginStatus}</div>
