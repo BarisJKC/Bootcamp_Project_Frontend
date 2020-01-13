@@ -57,22 +57,24 @@ export const getCustomerToken = (loginData) => async dispatch => { // to get sin
         // console.log(loginData);
         const res = await api.post('/customers/login',loginData);
         dispatch({type:'GET_CUSTOMER_TOKEN',payload:res.headers});
-        if(!loginData.isFromRegister) { // check if the request is coming from new register or not
-            dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:"Welcome to your account. You will be re-directed to Products page in 5 secs"});
-        };
+        const countDown = (i) => {
+            var timer = setInterval(() => {
+                if(!loginData.isFromRegister) { // check if the request is coming from new register or not
+                    dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:`Welcome to your account. You will be re-directed to Products page in ${i-1} secs`});
+                } else {
+                    dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:`Your account has been successfully created. You will be re-directed to Products page in ${i-1} secs`});
+                }
+                i--;
+                if (i===0) {
+                    clearInterval(timer);
+                    dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:res.data});
+                    history.push('/products');
+                }
+            }, 1000);
+        }
+        countDown(5);
         dispatch(getCustomerProfile());
-        const timer = setTimeout(() => {
-            // history.push('/customers/profile');
-            history.push('/products');
-            clearTimeout(timer);
-            dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:res.data});
-        }, 5000);
-        // history.push('/orders');
-        // dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:res.data});
-
-    } catch(error) { // incase of an error, error response to be recorded into store
-        // console.log(error.response.data);
-        // console.log(error)
+        } catch(error) { // incase of an error, error response to be recorded into store
         if (error.response) return dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:error.response.data});
         if (error) return dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:"Network problem!!!"});
     };
@@ -91,7 +93,6 @@ export const getCustomerRegister = (registerData) => async (dispatch,getState) =
             isFromRegister:true
         };
         dispatch(getCustomerToken(loginData));
-        dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:"Your account has been successfully created. You will be re-directed to Products page in 5 secs"});            
         dispatch({type:'GET_INTO_CUSTOMER_BASKET',payload:[]}); // cleanup any exisiting customer basket
         dispatch({type:'GET_ORDERS',payload:[]}); // cleanup any exisiting customer orders
         // const timer = setTimeout(() => {
