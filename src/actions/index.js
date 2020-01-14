@@ -43,9 +43,7 @@ export const getVendors = () => async dispatch => { // to get all Vendor info fr
 export const getCustomerProfile = () => async (dispatch,getState) => { // to get the customer profile info with the token of the customer from backend/database
     try {
         const token = getState().customerToken.authorization; // token is stored in the store
-        // console.log("Token",token)
-        const res = await api.post('/customers/profile',{headers: {'Authorization': token}});
-        // console.log('Res',res)
+        const res = await api.post('/customers/profile',{},{headers: {'Authorization': token}});
         dispatch({type:'GET_CUSTOMER_PROFILE',payload:res.data});
     } catch (res) {
         dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:"You need to login!"});
@@ -56,7 +54,7 @@ export const getCustomerToken = (loginData) => async dispatch => { // to get sin
     try {
         const res = await api.post('/customers/login',loginData);
         dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:`Please wait...`});
-        dispatch({type:'GET_CUSTOMER_TOKEN',payload:res.headers},getCustomerProfile());
+        await dispatch({type:'GET_CUSTOMER_TOKEN',payload:res.headers},getCustomerProfile());
         const countDown = (i) => {
             var timer = setInterval(() => {
                 if(!loginData.isFromRegister) { // check if the request is coming from new register or not
