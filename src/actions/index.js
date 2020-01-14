@@ -54,9 +54,9 @@ export const getCustomerProfile = () => async (dispatch,getState) => { // to get
 
 export const getCustomerToken = (loginData) => async dispatch => { // to get single customer info from backend/database and get a token for the customer from backend
     try {
-        // console.log(loginData);
         const res = await api.post('/customers/login',loginData);
-        dispatch({type:'GET_CUSTOMER_TOKEN',payload:res.headers});
+        dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:`Please wait...`});
+        dispatch({type:'GET_CUSTOMER_TOKEN',payload:res.headers},getCustomerProfile());
         const countDown = (i) => {
             var timer = setInterval(() => {
                 if(!loginData.isFromRegister) { // check if the request is coming from new register or not
@@ -73,7 +73,6 @@ export const getCustomerToken = (loginData) => async dispatch => { // to get sin
             }, 1000);
         }
         countDown(3);
-        dispatch(getCustomerProfile());
         } catch(error) { // incase of an error, error response to be recorded into store
         if (error.response) return dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:error.response.data});
         if (error) return dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:"Network problem!!!"});
