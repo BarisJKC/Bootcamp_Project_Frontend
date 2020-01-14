@@ -44,7 +44,7 @@ export const getCustomerProfile = () => async (dispatch,getState) => { // to get
     try {
         const token = getState().customerToken.authorization; // token is stored in the store
         // console.log("Token",token)
-        const res = await api.get('/customers/profile',{headers: {'Authorization': token}});
+        const res = await api.post('/customers/profile',{headers: {'Authorization': token}});
         // console.log('Res',res)
         dispatch({type:'GET_CUSTOMER_PROFILE',payload:res.data});
     } catch (res) {
@@ -72,7 +72,7 @@ export const getCustomerToken = (loginData) => async dispatch => { // to get sin
                 }
             }, 1000);
         }
-        countDown(5);
+        countDown(3);
         dispatch(getCustomerProfile());
         } catch(error) { // incase of an error, error response to be recorded into store
         if (error.response) return dispatch({type:'CUSTOMER_LOGIN_STATUS',payload:error.response.data});
